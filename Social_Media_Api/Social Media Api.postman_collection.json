@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "f5c896c7-73d2-4d80-bf39-a2b98e72802c",
+		"name": "Social Media Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"radwa\",\r\n    \"email\":\"radwaahmed@gmail.com\",\r\n    \"password\":\"123\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/Signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log in",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"email\":\"radwaahmed@gmail.com\",\r\n    \"password\":\"123\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/Login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log out",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/Logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User ",
+			"item": [
+				{
+					"name": "My Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/Profile/myprofile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Profile",
+								"myprofile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
