@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,9 +39,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::delete('posts/{id}', [PostController::class,'Delete']);
     Route::post('posts', [PostController::class,'create']);
     Route::get('posts/Myposts',[UserController::class,'Getposts']);
-    // Route::post('getpostsofuser/{', function ($id) {
 
-    // });
 });
 //Comments
 Route::group(['middleware'=>'auth:api'],function()
@@ -49,6 +48,14 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::put('Comments/{id}',[CommentController::class,'Update']);
     Route::delete('Comments/{id}', [CommentController::class,'Delete']);
     Route::post('Comments', [CommentController::class,'create']);
+});
+//Replies
+Route::group(['middleware'=>'auth:api'],function()
+{
+    Route::get('Reply',[ReplyController::class,'index']);
+    Route::put('Reply/{id}',[ReplyController::class,'Update']);
+    Route::delete('Reply/{id}', [ReplyController::class,'Delete']);
+    Route::post('Reply', [ReplyController::class,'create']);
 });
 //Extra:Email Verification & Forget Password & Gmail Api & Noftication & chat & stories & privacy
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

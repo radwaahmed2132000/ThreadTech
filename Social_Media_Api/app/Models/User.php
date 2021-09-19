@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Reply;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -52,5 +53,9 @@ class User extends Authenticatable
     public function comment()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function reply()
+    {
+        return $this->hasMany(Reply::class);
     }
 }

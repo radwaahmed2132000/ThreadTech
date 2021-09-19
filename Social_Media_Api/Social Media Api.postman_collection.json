@@ -59,7 +59,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \r\n    \"email\":\"radwaahmed@gmail.com\",\r\n    \"password\":\"123\"\r\n    \r\n}"
+							"raw": "{\r\n    \r\n    \"email\":\"radwa@gmail.com\",\r\n    \"password\":\"123\"\r\n    \r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/Login",
@@ -319,7 +319,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Description\":\" new posts\"\r\n\r\n}"
+							"raw": "{\r\n   \r\n     \"Description\":\" new posts\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/posts",
@@ -410,10 +410,38 @@
 				{
 					"name": "Show my posts",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": ""
+							"raw": "{{host}}/api/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"posts"
+							]
 						}
 					},
 					"response": []
@@ -480,7 +508,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Description\":\"Hello\",\r\n    \"post_id\":\"3\"\r\n}"
+							"raw": "{\r\n    \"Description\":\"Try\",\r\n    \"post_id\":\"3\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/Comments",
@@ -591,6 +619,161 @@
 								"api",
 								"Comments",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reply",
+			"item": [
+				{
+					"name": "Create Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Description\":\"My first reply\",\r\n    \"comment_id\":\"1\"\r\n   \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/Reply",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Reply"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show my replies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/Reply",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Reply"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit My reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Description\":\"Welcome\"\r\n   \r\n   \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/Reply/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Reply",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "co",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/Reply/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Reply",
+								"1"
 							]
 						}
 					},
