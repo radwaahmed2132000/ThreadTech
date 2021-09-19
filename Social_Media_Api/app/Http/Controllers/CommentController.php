@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\CommentsResource;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class CommentController extends Controller
         if($Comment!=null)
         $Comment->delete();
     }
-    public function Update(CommentRequest $request,$id)
+    public function Update(UpdateCommentRequest $request,$id)
     {
         $Comment=Comment::where('user_id',$request->user()->id)->where('id',$id)->first();
         if($Comment!=null)
