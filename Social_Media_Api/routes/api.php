@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -40,6 +41,14 @@ Route::group(['middleware'=>'auth:api'],function()
     // Route::post('getpostsofuser/{', function ($id) {
 
     // });
+});
+//Comments
+Route::group(['middleware'=>'auth:api'],function()
+{
+    Route::get('Comments',[CommentController::class,'index']);
+    Route::put('Comments/{id}',[CommentController::class,'Update']);
+    Route::delete('Comments/{id}', [CommentController::class,'Delete']);
+    Route::post('Comments', [CommentController::class,'create']);
 });
 //Extra:Email Verification & Forget Password & Gmail Api & Noftication & chat & stories & privacy
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\User;
-class PostResource extends JsonResource
+
+class CommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,9 @@ class PostResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+       return [
 
             'Description'=>$this->Description,
-            'image'=>$this->image,
-            'User'=> new UserResource(User::find($this->user_id))
-        ];
+            'image'=>$this->image];
     }
 }
