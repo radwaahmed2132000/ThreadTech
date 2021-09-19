@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-
+use App\Models\Post;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+     public function  post()
+    {
+        # code...
+        return $this->hasMany(Post::class);
+    }
 }

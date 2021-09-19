@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,19 @@ Route::group(['middleware'=>'auth:api','prefix'=>'Profile'],function()
     Route::put('Changepassword', [UserController::class,'ChangePassword']);
 
 });
+// Posts
+Route::group(['middleware'=>'auth:api'],function()
+{
+    Route::get('posts',[PostController::class,'index']);
+    Route::put('posts/{id}',[PostController::class,'Update']);
+    Route::delete('posts/{id}', [PostController::class,'Delete']);
+    Route::post('posts', [PostController::class,'create']);
+    Route::get('posts/Myposts',[UserController::class,'Getposts']);
+    // Route::post('getpostsofuser/{', function ($id) {
+
+    // });
+});
+//Extra:Email Verification & Forget Password & Gmail Api & Noftication & chat & stories & privacy
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

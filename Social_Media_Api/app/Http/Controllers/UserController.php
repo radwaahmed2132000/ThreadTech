@@ -56,7 +56,14 @@ class UserController extends Controller
           $user->save();
           return "Password is changed successfully";
        }
-    
+
        return " Passwords don't match";
+   }
+   public function Getposts(Request $request)
+   {
+       # code...
+       $user=$request->user();
+
+       return $user->post;
    }
 }
