@@ -19,11 +19,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('Signup',[AuthController::class,'Signup']);
 Route::post('Login', [AuthController::class,'Login']);
 Route::post('Logout', [AuthController::class,'Logout'])->middleware('auth:api');
-
+//User Profile Middleware
 Route::group(['middleware'=>'auth:api','prefix'=>'Profile'],function()
 {
     Route::get('myprofile',[UserController::class,'index']);
-    //Route::put('editprofile',[UserController::class,'update']);
+    Route::put('editprofile',[UserController::class,'Update']);
+    Route::delete('deleteaccount', [UserController::class,'Delete']);
+    Route::put('Changepassword', [UserController::class,'ChangePassword']);
 
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

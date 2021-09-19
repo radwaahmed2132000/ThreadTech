@@ -25,9 +25,11 @@ class SignUpRequest extends FormRequest
     {
         return [
             //
-            'email'=>'required',
+            'email'=>'required|email:rfc,dns|regex:/^.+@.+$/i',
             'password'=>'required',
-            'name'=>'required'
+            'name'=>'required|min:3',
+            'mobilephone'=>'numeric',
+            'image'=>'image'
         ];
     }
 }
