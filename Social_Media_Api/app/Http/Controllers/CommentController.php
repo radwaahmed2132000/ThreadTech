@@ -24,24 +24,22 @@ class CommentController extends Controller
     {
         # code...
 
-        $arr=$request->all();
+        $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
 
         return  new CommentResource ( Comment::create($arr));
 
     }
-    public function Delete(Request $request,$id)
+    public function Delete(Request $request,Comment $comment)
     {
 
-        $Comment=Comment::where('user_id',$request->user()->id)->where('id',$id)->first();
-        if($Comment!=null)
-        $Comment->delete();
+        $this->authorize('view',$comment);
+        $comment->delete();
     }
-    public function Update(UpdateCommentRequest $request,$id)
+    public function Update(UpdateCommentRequest $request,Comment $comment)
     {
-        $Comment=Comment::where('user_id',$request->user()->id)->where('id',$id)->first();
-        if($Comment!=null)
-        return  $Comment->update($request->all());
+         $this->authorize('view',$comment);
 
+        return  $comment->update($request->validated());
     }
 }

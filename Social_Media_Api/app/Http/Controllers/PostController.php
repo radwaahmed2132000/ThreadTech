@@ -25,24 +25,26 @@ class PostController extends Controller
     {
         # code...
 
-        $arr=$request->all();
+
+        $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
 
         return  new PostResource( Post::create($arr));
 
     }
-    public function Delete(Request $request,$id)
+    public function Delete(Request $request,Post $post)
+    {
+        $this->authorize('view',$post);
+        $post->delete();
+
+    }
+    public function Update(PostRequest $request,Post $post)
     {
 
-        $post=Post::where('user_id',$request->user()->id)->where('id',$id)->first();
-        if($post!=null)
-        $post->delete();
-    }
-    public function Update(PostRequest $request,$id)
-    {
-        $post=Post::where('user_id',$request->user()->id)->where('id',$id)->first();
-        if($post!=null)
-        return  $post->update($request->all());
+      $this->authorize('view',$post);
+
+        return  $post->update($request->validated());
+
 
     }
     public function  Getallposts(Request $request)

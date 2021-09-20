@@ -24,25 +24,24 @@ class ReplyController extends Controller
     {
         # code...
 
-        $arr=$request->all();
+        $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
 
 
         return  new ReplyResource(  Reply::create($arr));
 
     }
-    public function Delete(Request $request,$id)
+    public function Delete(Request $request,Reply $reply)
     {
+        $this->authorize('view',$reply);
+        $reply->delete();
 
-        $Reply=Reply::where('user_id',$request->user()->id)->where('id',$id)->first();
-        if($Reply!=null)
-        $Reply->delete();
+
     }
-    public function Update(UpdateReplyRequest  $request,$id)
+    public function Update(UpdateReplyRequest  $request,Reply $reply)
     {
-        $Reply=Reply::where('user_id',$request->user()->id)->where('id',$id)->first();
-        if($Reply!=null)
-        return  $Reply->update($request->all());
+        $this->authorize('view',$reply);
 
+        return  $reply->update($request->validated());
     }
 }

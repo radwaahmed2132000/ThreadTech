@@ -35,8 +35,8 @@ Route::group(['middleware'=>'auth:api','prefix'=>'Profile'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('posts',[PostController::class,'index']);
-    Route::put('posts/{id}',[PostController::class,'Update']);
-    Route::delete('posts/{id}', [PostController::class,'Delete']);
+    Route::put('posts/{post}',[PostController::class,'Update']);
+    Route::delete('posts/{post}', [PostController::class,'Delete']);
     Route::post('posts', [PostController::class,'create']);
     Route::get('posts/Myposts',[UserController::class,'Getposts']);
 
@@ -45,18 +45,19 @@ Route::group(['middleware'=>'auth:api'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Comments',[CommentController::class,'index']);
-    Route::put('Comments/{id}',[CommentController::class,'Update']);
-    Route::delete('Comments/{id}', [CommentController::class,'Delete']);
+    Route::put('Comments/{comment}',[CommentController::class,'Update']);
+    Route::delete('Comments/{comment}', [CommentController::class,'Delete']);
     Route::post('Comments', [CommentController::class,'create']);
 });
 //Replies
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Reply',[ReplyController::class,'index']);
-    Route::put('Reply/{id}',[ReplyController::class,'Update']);
-    Route::delete('Reply/{id}', [ReplyController::class,'Delete']);
+    Route::put('Reply/{reply}',[ReplyController::class,'Update']);
+    Route::delete('Reply/{reply}', [ReplyController::class,'Delete']);
     Route::post('Reply', [ReplyController::class,'create']);
 });
+//Reactions, FollowRequest,Privacy of User, Groups'may be feature',Filter Search as feature
 //Extra:Email Verification & Forget Password & Gmail Api & Noftication & chat & stories & privacy
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
