@@ -10,6 +10,9 @@ use Laravel\Passport\HasApiTokens;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Reply;
+use App\Models\Replyreaction;
+use App\Models\Reaction;
+use App\Models\Postreaction;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -57,5 +60,20 @@ class User extends Authenticatable
     public function reply()
     {
         return $this->hasMany(Reply::class);
+    }
+     public function reaction()
+    {
+        return $this->hasMany(Reaction::class);
+
+    }
+    public function postreaction()
+    {
+        return $this->hasMany(Postreaction::class);
+
+    }
+    public function replyreaction()
+    {
+        return $this->hasMany(Replyreaction::class);
+
     }
 }

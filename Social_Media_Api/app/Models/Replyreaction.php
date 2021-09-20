@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Reply;
-class Replyeaction extends Model
+class Replyreaction extends Model
 {
     use HasFactory;
     protected $fillable = [
