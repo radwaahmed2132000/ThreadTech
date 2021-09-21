@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
@@ -8,6 +8,8 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ReplyreactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailVerificationNotificationController ;
+use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,7 +43,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::get('posts/{post}',[PostController::class,'show']);
     Route::put('posts/{post}',[PostController::class,'Update']);
     Route::delete('posts/{post}', [PostController::class,'Delete']);
-    Route::post('posts', [PostController::class,'create']);
+    Route::post('posts', [PostController::class,'create'])->middleware('verified');
     Route::get('posts/Myposts',[UserController::class,'Getposts']);
 
 });
@@ -52,7 +54,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::get('Comments/{comment}',[CommentController::class,'show']);
     Route::put('Comments/{comment}',[CommentController::class,'Update']);
     Route::delete('Comments/{comment}', [CommentController::class,'Delete']);
-    Route::post('Comments', [CommentController::class,'create']);
+    Route::post('Comments', [CommentController::class,'create'])->middleware('verified');;
 });
 //Replies
 Route::group(['middleware'=>'auth:api'],function()
@@ -61,7 +63,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::get('Reply/{reply}',[ReplyController::class,'show']);
     Route::put('Reply/{reply}',[ReplyController::class,'Update']);
     Route::delete('Reply/{reply}', [ReplyController::class,'Delete']);
-    Route::post('Reply', [ReplyController::class,'create']);
+    Route::post('Reply', [ReplyController::class,'create'])->middleware('verified');;
 });
 // Reactions on comements
 Route::group(['middleware'=>'auth:api'],function()
@@ -70,7 +72,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::get('Reaction/{reaction}',[ReactionController::class,'show']);
     Route::put('Reaction/{reaction}',[ReactionController::class,'Update']);
     Route::delete('Reaction/{reaction}', [ReactionController::class,'Delete']);
-    Route::post('Reaction', [ReactionController::class,'create']);
+    Route::post('Reaction', [ReactionController::class,'create'])->middleware('verified');;
 });
 
 // Reactions on posts
@@ -80,7 +82,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::get('Postreaction/{postreaction}',[PostreactionController::class,'show']);
     Route::put('Postreaction/{postreaction}',[PostreactionController::class,'Update']);
     Route::delete('Postreaction/{postreaction}', [PostreactionController::class,'Delete']);
-    Route::post('Postreaction', [PostreactionController::class,'create']);
+    Route::post('Postreaction', [PostreactionController::class,'create'])->middleware('verified');;
 });
 // Reactions on replies
 Route::group(['middleware'=>'auth:api'],function()
@@ -89,10 +91,24 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::get('Replyreaction/{replyreaction}',[ReplyreactionController::class,'show']);
     Route::put('Replyreaction/{replyreaction}',[ReplyreactionController::class,'Update']);
     Route::delete('Replyreaction/{replyreaction}', [ReplyreactionController::class,'Delete']);
-    Route::post('Replyreaction', [ReplyreactionController::class,'create']);
+    Route::post('Replyreaction', [ReplyreactionController::class,'create'])->middleware('verified');;
 });
-// FvollowRequest,Priacy of User, Groups'may be feature',Filter Search as feature
-//Extra:Email Verification & Forget Password & Gmail Api & Noftication & chat & stories & privacy
+//email verification
+// Verify email
+Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
+                ->middleware('auth')
+                ->name('verification.notice');
+
+Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+                ->middleware(['auth', 'signed', 'throttle:6,1'])
+                ->name('verification.verify');
+
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+                ->middleware(['auth', 'throttle:6,1'])
+                ->name('verification.send');
+// FvollowRequest,Freind request, share posts,Priacy of User, Forget Password  ,Groups'may be feature',Filter Search as feature
+//Extra: Gmail Api  & privacy
+// Exception handler , more middle ware for json response, Base64 for images
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

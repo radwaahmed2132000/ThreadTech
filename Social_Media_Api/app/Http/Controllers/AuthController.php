@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
 use  App\Models\User;
+use Illuminate\Auth\Events\Registered;
 class AuthController extends Controller
 {
     //
@@ -24,6 +25,9 @@ class AuthController extends Controller
     }
      $user=User::where('email',$request->email)->first();
      $token=$user->createToken('Backend')->accessToken;
+
+
+      event(new Registered($user));
      return ["token"=>$token,"user"=>$user];
     }
     public function  Signup(SignUpRequest $request)
@@ -33,6 +37,7 @@ class AuthController extends Controller
 
 
           $user=User::create( $request->all());
+          event(new Registered($user));
         $token=$user->createToken('Backend')->accessToken;
         return ["token"=>$token,"user"=>$user];
 

@@ -13,7 +13,7 @@ use App\Models\Reply;
 use App\Models\Replyreaction;
 use App\Models\Reaction;
 use App\Models\Postreaction;
-class User extends Authenticatable
+class User extends Authenticatable  implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
