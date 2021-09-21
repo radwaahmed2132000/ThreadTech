@@ -18,6 +18,11 @@ class PostreactionController extends Controller
                  $posts=Postreaction::where('user_id',$request->user()->id)->paginate(15);
                  return PostreactionResource::collection( $posts);
     }
+    public function show(Postreaction $postreaction)
+    {
+        # code...
+         return new PostreactionResource($postreaction);
+    }
 
     public function  create(PostreactionRequest $request)
     {
@@ -36,12 +41,14 @@ class PostreactionController extends Controller
         $postreaction->delete();
 
     }
-    public function Update(PostreactionRequest $request,Postreaction $postreaction)
+    public function Update(Request $request,Postreaction $postreaction)
     {
 
       $this->authorize('view',$postreaction);
+      $request= $request->validate([
+        'react' => 'required']);
 
-        return  $postreaction->update($request->validated());
+        return  $postreaction->update($request);
 
 
     }

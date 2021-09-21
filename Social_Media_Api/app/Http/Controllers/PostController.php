@@ -20,7 +20,11 @@ class PostController extends Controller
                  $posts=Post::where('user_id',$request->user()->id)->paginate(15);
                  return PostsResource::collection( $posts);
     }
-
+    public function show(Post $post)
+    {
+        # code...
+        return new PostResource($post);
+    }
     public function  create(PostRequest $request)
     {
         # code...

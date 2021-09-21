@@ -38,6 +38,7 @@ Route::group(['middleware'=>'auth:api','prefix'=>'Profile'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('posts',[PostController::class,'index']);
+    Route::get('posts/{post}',[PostController::class,'show']);
     Route::put('posts/{post}',[PostController::class,'Update']);
     Route::delete('posts/{post}', [PostController::class,'Delete']);
     Route::post('posts', [PostController::class,'create']);
@@ -48,6 +49,7 @@ Route::group(['middleware'=>'auth:api'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Comments',[CommentController::class,'index']);
+    Route::get('Comments/{comment}',[CommentController::class,'show']);
     Route::put('Comments/{comment}',[CommentController::class,'Update']);
     Route::delete('Comments/{comment}', [CommentController::class,'Delete']);
     Route::post('Comments', [CommentController::class,'create']);
@@ -56,6 +58,7 @@ Route::group(['middleware'=>'auth:api'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Reply',[ReplyController::class,'index']);
+    Route::get('Reply/{reply}',[ReplyController::class,'show']);
     Route::put('Reply/{reply}',[ReplyController::class,'Update']);
     Route::delete('Reply/{reply}', [ReplyController::class,'Delete']);
     Route::post('Reply', [ReplyController::class,'create']);
@@ -64,6 +67,7 @@ Route::group(['middleware'=>'auth:api'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Reaction',[ReactionController::class,'index']);
+    Route::get('Reaction/{reaction}',[ReactionController::class,'show']);
     Route::put('Reaction/{reaction}',[ReactionController::class,'Update']);
     Route::delete('Reaction/{reaction}', [ReactionController::class,'Delete']);
     Route::post('Reaction', [ReactionController::class,'create']);
@@ -73,6 +77,7 @@ Route::group(['middleware'=>'auth:api'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Postreaction',[PostreactionController::class,'index']);
+    Route::get('Postreaction/{postreaction}',[PostreactionController::class,'show']);
     Route::put('Postreaction/{postreaction}',[PostreactionController::class,'Update']);
     Route::delete('Postreaction/{postreaction}', [PostreactionController::class,'Delete']);
     Route::post('Postreaction', [PostreactionController::class,'create']);
@@ -81,6 +86,7 @@ Route::group(['middleware'=>'auth:api'],function()
 Route::group(['middleware'=>'auth:api'],function()
 {
     Route::get('Replyreaction',[ReplyreactionController::class,'index']);
+    Route::get('Replyreaction/{replyreaction}',[ReplyreactionController::class,'show']);
     Route::put('Replyreaction/{replyreaction}',[ReplyreactionController::class,'Update']);
     Route::delete('Replyreaction/{replyreaction}', [ReplyreactionController::class,'Delete']);
     Route::post('Replyreaction', [ReplyreactionController::class,'create']);

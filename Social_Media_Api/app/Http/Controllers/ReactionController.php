@@ -18,6 +18,11 @@ class ReactionController extends Controller
                  $posts=Reaction::where('user_id',$request->user()->id)->paginate(15);
                  return ReactionResource::collection( $posts);
     }
+    public function show(Reaction $reaction)
+    {
+        # code...
+        return new ReactionResource($reaction);
+    }
 
     public function  create(ReactionRequest $request)
     {
@@ -36,12 +41,14 @@ class ReactionController extends Controller
         $reaction->delete();
 
     }
-    public function Update(ReactionRequest $request,Reaction $reaction)
+    public function Update(Request $request,Reaction $reaction)
     {
 
       $this->authorize('view',$reaction);
+      $request= $request->validate([
+        'react' => 'required']);
 
-        return  $reaction->update($request->validated());
+        return  $reaction->update($request);
 
 
     }

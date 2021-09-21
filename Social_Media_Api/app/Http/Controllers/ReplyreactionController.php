@@ -29,18 +29,19 @@ class ReplyreactionController extends Controller
         return  new ReplyreactionResource( Replyreaction::create($arr));
 
     }
-    public function Delete(ReplyreactionRequest $request,Replyreaction $replyreaction)
+    public function Delete(Request $request,Replyreaction $replyreaction)
     {
         $this->authorize('view',$replyreaction);
         $replyreaction->delete();
 
     }
-    public function Update(ReplyreactionRequest $request,Replyreaction $replyreaction)
+    public function Update(Request $request,Replyreaction $replyreaction)
     {
 
       $this->authorize('view',$replyreaction);
-
-        return  $replyreaction->update($request->validated());
+      $request= $request->validate([
+        'react' => 'required']);
+        return  $replyreaction->update($request);
 
 
     }

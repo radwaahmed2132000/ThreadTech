@@ -17,7 +17,7 @@ class ReplyreactionResource extends JsonResource
     {
         return  ['react'=>$this->react,
         'User'=> new UserResource(User::find($this->user_id)),
-        'Reply'=> new CommentResource(Reply::find($this->post_id))
+        'Reply'=> new CommentResource(Reply::find($this->reply_id))
       ];
     }
 }

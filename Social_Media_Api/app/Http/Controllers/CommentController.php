@@ -19,6 +19,11 @@ class CommentController extends Controller
                  $Comment=Comment::where('user_id',$request->user()->id)->paginate(15);
                  return CommentsResource::collection( $Comment);
     }
+    public function show(Comment $comment)
+    {
+        # code...
+        return new CommentResource($comment);
+    }
 
     public function  create(CommentRequest $request)
     {

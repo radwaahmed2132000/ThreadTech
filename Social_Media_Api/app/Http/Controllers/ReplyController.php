@@ -44,4 +44,9 @@ class ReplyController extends Controller
 
         return  $reply->update($request->validated());
     }
+    public function show(Reply $reply)
+    {
+        # code...
+        return new ReplyResource($reply);
+    }
 }
