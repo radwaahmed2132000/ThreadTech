@@ -23,7 +23,7 @@ $  git clone https://github.com/radwaahmed2132000/Social-Media-API-.git
 ### 2.Navigate to repository directory
 ```
 $ cd Social_Media_Api
-$ cd Social_Media_Api
+
 ```
 ### 3.Install Depencies
 ```
