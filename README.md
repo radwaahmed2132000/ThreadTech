@@ -1,4 +1,4 @@
-# Social-Media-API-
+# ThreadTech
 ## Table of contents
 * General info
 * Technologies
