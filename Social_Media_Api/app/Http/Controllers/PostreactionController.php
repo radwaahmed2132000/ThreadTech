@@ -31,8 +31,10 @@ class PostreactionController extends Controller
 
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
-
-        return  new PostreactionResource( Postreaction::create($arr));
+        $postreaction= Postreaction::create($arr);
+        if( $postreaction->post->user->id !=$arr['user_id'])
+         SendnotificationController::postnotification($request,$postreaction);
+        return  new PostreactionResource($postreaction);
 
     }
     public function Delete(Request $request,Postreaction $postreaction)

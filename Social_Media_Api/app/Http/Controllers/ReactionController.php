@@ -31,8 +31,12 @@ class ReactionController extends Controller
 
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
+        $postreaction= Reaction::create($arr);
+        if( $postreaction->comment->user->id !=$arr['user_id'])
+         SendnotificationController::commentreactnotification($request,$postreaction);
 
-        return  new ReactionResource( Reaction::create($arr));
+
+        return  new ReactionResource($postreaction );
 
     }
     public function Delete(Request $request,Reaction $reaction)

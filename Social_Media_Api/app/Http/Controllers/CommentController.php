@@ -32,7 +32,11 @@ class CommentController extends Controller
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
 
-        return  new CommentResource ( Comment::create($arr));
+        $postreaction=  Comment::create($arr);
+        if( $postreaction->post->user->id !=$arr['user_id'])
+         SendnotificationController::commentnotification($request,$postreaction);
+
+        return  new CommentResource ($postreaction);
 
     }
     public function Delete(Request $request,Comment $comment)

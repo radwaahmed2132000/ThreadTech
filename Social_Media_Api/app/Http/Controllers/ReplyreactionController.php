@@ -26,7 +26,12 @@ class ReplyreactionController extends Controller
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
 
-        return  new ReplyreactionResource( Replyreaction::create($arr));
+        $postreaction= Replyreaction::create($arr);
+
+        if( $postreaction->reply->user_id !=$arr['user_id'])
+         SendnotificationController::replyreactnotification($request,$postreaction);
+
+        return  new ReplyreactionResource(  $postreaction);
 
     }
     public function Delete(Request $request,Replyreaction $replyreaction)

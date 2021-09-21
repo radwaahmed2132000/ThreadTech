@@ -91,7 +91,7 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::delete('Replyreaction/{replyreaction}', [ReplyreactionController::class,'Delete']);
     Route::post('Replyreaction', [ReplyreactionController::class,'create']);
 });
-//Reactions, FollowRequest,Privacy of User, Groups'may be feature',Filter Search as feature
+// FvollowRequest,Priacy of User, Groups'may be feature',Filter Search as feature
 //Extra:Email Verification & Forget Password & Gmail Api & Noftication & chat & stories & privacy
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
