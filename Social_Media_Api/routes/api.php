@@ -95,17 +95,14 @@ Route::group(['middleware'=>'auth:api'],function()
 });
 //email verification
 // Verify email
-Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
-                ->middleware('auth')
-                ->name('verification.notice');
+Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke']);
 
-Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-                ->middleware(['auth', 'signed', 'throttle:6,1'])
-                ->name('verification.verify');
 
-Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware(['auth', 'throttle:6,1'])
-                ->name('verification.send');
+Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke']);
+
+
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store']);
+
 // FvollowRequest,Freind request, share posts,Priacy of User, Forget Password  ,Groups'may be feature',Filter Search as feature
 //Extra: Gmail Api  & privacy
 // Exception handler , more middle ware for json response, Base64 for images
