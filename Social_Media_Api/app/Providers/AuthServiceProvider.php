@@ -18,6 +18,11 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
 
         'App\Models\Post' => 'App\Policies\PostPolicy',
+        'App\Models\Comment' => 'App\Policies\CommentPolicy',
+        'App\Models\Reply' => 'App\Policies\ReplyPolicy',
+        'App\Models\Reaction' => 'App\Policies\ReactionPolicy',
+        'App\Models\Replyreaction' => 'App\Policies\ReplyreactionPolicy',
+        'App\Models\Postreaction' => 'App\Policies\PostreactionPolicy',
 
     ];
 
@@ -31,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         Passport::routes();
 
-       
+
 
         //
     }

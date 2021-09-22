@@ -13,6 +13,9 @@ use App\Models\Reply;
 use App\Models\Replyreaction;
 use App\Models\Reaction;
 use App\Models\Postreaction;
+use App\Models\Follower;
+use App\Models\Following;
+use App\Models\Followrequest;
 class User extends Authenticatable  implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -74,6 +77,17 @@ class User extends Authenticatable  implements MustVerifyEmail
     public function replyreaction()
     {
         return $this->hasMany(Replyreaction::class);
-
+    }
+    public function follower()
+    {
+        return $this->hasMany(Follower::class);
+    }
+    public function following()
+    {
+     return $this->hasMany(Following::class);
+    }
+    public function followrequest()
+    {
+        return $this->hasMany(Followrequest::class);
     }
 }
