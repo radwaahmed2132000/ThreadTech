@@ -5,7 +5,7 @@
 * Setup
 
 ## General info
-This social media api project which provide for user to create account ,post ,comment ,reply and reaction of any of them.The user can do all of crud operations.After The user create any action for another user, Email notification is send to inform the another user. The user is not allowed to change things of another users.
+This social media api project which provide for user to create account ,post ,comment ,reply and reaction of any of them.The user can do all of crud operations.After The user create any action for another user, Email notification is send to inform the another user. The user is not allowed to change things of another users.The user can send follow request for another user to follow hem/her to see new posts and add comment or reaction on the posts.
 
 	
 ## Technologies
