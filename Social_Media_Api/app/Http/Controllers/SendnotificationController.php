@@ -41,9 +41,9 @@ class SendnotificationController extends Controller
 
   }
   //reply
-  public static function replynotification(Request $request,Reply $reply)
+  public static function replynotification(Request $request,Reply $reply,$user)
   {
-    $user=$request->user();
+
     $arr=[];
     $arr['user_name']=$user->name;
     $arr['post_id']=$reply->comment->comment_id;
@@ -53,9 +53,9 @@ class SendnotificationController extends Controller
   }
 
   //comment reaction
-  public static function commentreactnotification(Request $request ,Reaction $reaction)
+  public static function commentreactnotification(Request $request ,Reaction $reaction,$user)
   {
-      $user=$request->user();
+
       $arr=[];
       $arr['user_name']=$user->name;
       $arr['comment_id']=$reaction->comment->comment_id;
@@ -64,7 +64,7 @@ class SendnotificationController extends Controller
 
   }
   // reply reaction
-  public static function replyreactnotification(Request $request ,Replyreaction $reaction)
+  public static function replyreactnotification(Request $request ,Replyreaction $reaction,$user)
   {
       $user=$request->user();
       $arr=[];

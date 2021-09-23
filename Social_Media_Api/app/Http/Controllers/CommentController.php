@@ -8,6 +8,8 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\CommentsResource;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Post;
+use App\Models\Follower;
 class CommentController extends Controller
 {
     //
@@ -31,12 +33,25 @@ class CommentController extends Controller
 
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
+        $post=Post::find($request->post_id);
+         $user=$post->user;
 
-        $postreaction=  Comment::create($arr);
-        if( $postreaction->post->user->id !=$arr['user_id'])
-         SendnotificationController::commentnotification($request,$postreaction);
-
+        if($user->id !=$arr['user_id'])
+      {
+        $follower=Follower::where('user_id',$user->id)->where('follower_id',$arr['user_id'])->get();
+        if($follower!=null)
+      {   $postreaction=  Comment::create($arr);
+        SendnotificationController::commentnotification($request,$postreaction);
         return  new CommentResource ($postreaction);
+      }
+      }
+      else
+      {
+        $postreaction=  Comment::create($arr);
+        return  new CommentResource ($postreaction);
+      }
+
+
 
     }
     public function Delete(Request $request,Comment $comment)

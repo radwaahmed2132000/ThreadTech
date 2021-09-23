@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReplyreactionRequest;
 use App\Http\Resources\ReplyreactionResource;
+use App\Models\Reply;
+use App\Models\Follower;
 use Illuminate\Http\Request;
 use App\Models\Replyreaction;
 class ReplyreactionController extends Controller
@@ -25,13 +27,27 @@ class ReplyreactionController extends Controller
 
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
+        $user=Reply::find($request->reply_id)->comment->post->user;
 
-        $postreaction= Replyreaction::create($arr);
+        if( $user->id!=$arr['user_id'])
+        {
+            $follower=Follower::where('user_id',$user->id)->where('follower_id',$arr['user_id'])->get();
+            if($follower!=null || $user->privacy)
+         {   $postreaction= Replyreaction::create($arr);
+            $user_replyier=Reply::find($request->reply_id)->user;
+            if($user_replyier->id!=$arr['user_id'])
+            SendnotificationController::replyreactnotification($request,$postreaction,$user_replyier);
+            return  new ReplyreactionResource(  $postreaction);
+         }
 
-        if( $postreaction->reply->user_id !=$arr['user_id'])
-         SendnotificationController::replyreactnotification($request,$postreaction);
+        }
+        else
+        {
+            $postreaction= Replyreaction::create($arr);
 
-        return  new ReplyreactionResource(  $postreaction);
+            return  new ReplyreactionResource(  $postreaction);
+
+        }
 
     }
     public function Delete(Request $request,Replyreaction $replyreaction)

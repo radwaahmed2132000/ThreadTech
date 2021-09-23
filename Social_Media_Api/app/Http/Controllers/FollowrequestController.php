@@ -20,6 +20,7 @@ class FollowrequestController extends Controller
         $arr['requester_id']= $FollowRequest;
         $arr['user_id']=$request->user()->id;
         $arr['request']=false;
+        new FollowrequestNotification($request->user()->name);
         new FollowrequestResource(  Followrequest::create($arr));
     }
     // decline  follow request

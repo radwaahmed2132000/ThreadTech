@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostreactionRequest;
 use App\Http\Resources\PostreactionResource;
+use App\Models\Follower;
+use App\Models\Following;
 use App\Models\Postreaction;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostreactionController extends Controller
@@ -31,10 +34,26 @@ class PostreactionController extends Controller
 
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
-        $postreaction= Postreaction::create($arr);
-        if( $postreaction->post->user->id !=$arr['user_id'])
-         SendnotificationController::postnotification($request,$postreaction);
-        return  new PostreactionResource($postreaction);
+        $post=Post::find($request->post_id);
+
+        $user=$post->user;
+        if( $user->id !=$arr['user_id'])
+        {
+            $follower=Follower::where('user_id',$user->id)->where('follower_id',$arr['user_id'])->get();
+            if($follower!=null || $user->privacy)
+            { $postreaction= Postreaction::create($arr);
+            SendnotificationController::postnotification($request,$postreaction);
+            return  new PostreactionResource($postreaction);
+            }
+        }
+        else
+        {
+            // me react to me
+            $postreaction= Postreaction::create($arr);
+            return  new PostreactionResource($postreaction);
+        }
+
+
 
     }
     public function Delete(Request $request,Postreaction $postreaction)

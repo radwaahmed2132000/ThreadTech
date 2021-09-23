@@ -27,7 +27,7 @@ class AuthController extends Controller
      $token=$user->createToken('Backend')->accessToken;
 
 
-    //   event(new Registered($user));
+       event(new Registered($user));
      return ["token"=>$token,"user"=>$user];
     }
     public function  Signup(SignUpRequest $request)
@@ -37,7 +37,7 @@ class AuthController extends Controller
 
 
           $user=User::create( $request->all());
-        //   event(new Registered($user));
+           event(new Registered($user));
         $token=$user->createToken('Backend')->accessToken;
         return ["token"=>$token,"user"=>$user];
 

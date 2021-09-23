@@ -105,8 +105,8 @@ Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke']);
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store']);
 
-//follow notification, share posts,Priacy of User,block user, Forget Password  ,Groups'may be feature',Filter Search as feature
-//Extra: Gmail Api  & privacy
+// Priacy of User,block user, Forget Password
+//Extra: Gmail Api, Filter Search as feature
 // Exception handler , more middle ware for json response, Base64 for images
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
