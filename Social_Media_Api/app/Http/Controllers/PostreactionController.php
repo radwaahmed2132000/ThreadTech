@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Misc\Helpers\Config;
 use App\Http\Requests\PostreactionRequest;
 use App\Http\Resources\PostreactionResource;
 use App\Models\Follower;
@@ -18,13 +19,13 @@ class PostreactionController extends Controller
         # code...
 
 
-                 $posts=Postreaction::where('user_id',$request->user()->id)->paginate(15);
-                 return PostreactionResource::collection( $posts);
+                 $posts=Postreaction::where('user_id',$request->user()->id)->paginate(Config::PAGINATION_LIMIT);
+                 return $this->success_response( PostreactionResource::collection( $posts));
     }
     public function show(Postreaction $postreaction)
     {
         # code...
-         return new PostreactionResource($postreaction);
+         return $this->success_response(new PostreactionResource($postreaction));
     }
 
     public function  create(PostreactionRequest $request)
@@ -43,14 +44,15 @@ class PostreactionController extends Controller
             if($follower!=null || $user->privacy)
             { $postreaction= Postreaction::create($arr);
             SendnotificationController::postnotification($request,$postreaction);
-            return  new PostreactionResource($postreaction);
+            return $this->success_response( new PostreactionResource($postreaction));
             }
+            return $this->error_response("Failed");
         }
         else
         {
             // me react to me
             $postreaction= Postreaction::create($arr);
-            return  new PostreactionResource($postreaction);
+            return $this->success_response( new PostreactionResource($postreaction));
         }
 
 
@@ -59,7 +61,7 @@ class PostreactionController extends Controller
     public function Delete(Request $request,Postreaction $postreaction)
     {
         $this->authorize('view',$postreaction);
-        $postreaction->delete();
+       $this->success_response( $postreaction->delete());
 
     }
     public function Update(Request $request,Postreaction $postreaction)
@@ -69,7 +71,7 @@ class PostreactionController extends Controller
       $request= $request->validate([
         'react' => 'required']);
 
-        return  $postreaction->update($request);
+        return $this->success_response( $postreaction->update($request));
 
 
     }

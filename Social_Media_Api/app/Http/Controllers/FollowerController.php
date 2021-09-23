@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Misc\Helpers\Config;
 use Illuminate\Http\Request;
 use App\Http\Resources\FollowerResource;
 use App\Models\Follower;
@@ -24,17 +25,20 @@ class FollowerController extends Controller
               Follower::where('follower_id',$follower)->where('user_id',$request->user()->id)->delete();
             // // me deleted from moha,ed following
              Following::where('following_id',$request->user()->id)->where('user_id',$follower)->delete();
+
           DB::commit();
+          return $this->success_response('Deleted Successfully');
         }
         catch(Exception $e)
         {
           DB::rollBack();
+          return $this->error_response("Failed Process");
         }
 
     }
     public function index(Request $request)
     {
-        return FollowerResource::collection(Follower::where('user_id',$request->user()->id)->paginate());
+        return $this->success_response( FollowerResource::collection(Follower::where('user_id',$request->user()->id)->paginate(Config::PAGINATION_LIMIT)));
     }
 
 }

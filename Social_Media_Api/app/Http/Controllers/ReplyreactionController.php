@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Misc\Helpers\Config;
 use App\Http\Requests\ReplyreactionRequest;
 use App\Http\Resources\ReplyreactionResource;
 use App\Models\Reply;
@@ -16,8 +17,8 @@ class ReplyreactionController extends Controller
         # code...
 
 
-                 $posts=Replyreaction::where('user_id',$request->user()->id)->paginate(15);
-                 return ReplyreactionResource::collection( $posts);
+                 $posts=Replyreaction::where('user_id',$request->user()->id)->paginate(Config::PAGINATION_LIMIT);
+                 return $this->success_response( ReplyreactionResource::collection( $posts));
     }
 
     public function  create(ReplyreactionRequest $request)
@@ -37,15 +38,16 @@ class ReplyreactionController extends Controller
             $user_replyier=Reply::find($request->reply_id)->user;
             if($user_replyier->id!=$arr['user_id'])
             SendnotificationController::replyreactnotification($request,$postreaction,$user_replyier);
-            return  new ReplyreactionResource(  $postreaction);
+            return $this->success_response( new ReplyreactionResource(  $postreaction));
          }
+         return $this->error_response('Failed');
 
         }
         else
         {
             $postreaction= Replyreaction::create($arr);
 
-            return  new ReplyreactionResource(  $postreaction);
+            return $this->success_response( new ReplyreactionResource(  $postreaction));
 
         }
 
@@ -53,7 +55,7 @@ class ReplyreactionController extends Controller
     public function Delete(Request $request,Replyreaction $replyreaction)
     {
         $this->authorize('view',$replyreaction);
-        $replyreaction->delete();
+       return $this->success_response( $replyreaction->delete());
 
     }
     public function Update(Request $request,Replyreaction $replyreaction)
@@ -62,7 +64,7 @@ class ReplyreactionController extends Controller
       $this->authorize('view',$replyreaction);
       $request= $request->validate([
         'react' => 'required']);
-        return  $replyreaction->update($request);
+        return $this->success_response( $replyreaction->update($request));
 
 
     }

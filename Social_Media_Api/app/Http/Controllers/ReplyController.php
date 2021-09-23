@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Misc\Helpers\Config;
 use App\Http\Requests\ReplyRequest;
 use App\Http\Requests\UpdateReplyRequest;
 use App\Http\Resources\RepliesResource;
@@ -18,8 +19,8 @@ class ReplyController extends Controller
         # code...
 
 
-                 $Reply=Reply::where('user_id',$request->user()->id)->paginate(15);
-                 return RepliesResource::collection( $Reply);
+                 $Reply=Reply::where('user_id',$request->user()->id)->paginate(Config::PAGINATION_LIMIT);
+                 return $this->success_response( RepliesResource::collection( $Reply));
     }
 
     public function  create(ReplyRequest $request)
@@ -37,14 +38,15 @@ class ReplyController extends Controller
             $user_replier=Comment::find($request->comment_id)->user;
             if($user_replier->id!=$arr['user_id'])
            SendnotificationController::replynotification($request,$postreaction,$user_replier);
-           return  new ReplyResource(   $postreaction);
+           return $this->success_response( new ReplyResource(   $postreaction));
          }
+         return $this->error_response('Failed');
 
        }
        else
        {
         $postreaction= Reply::create($arr);
-        return  new ReplyResource(   $postreaction);
+        return $this->success_response( new ReplyResource(   $postreaction));
        }
 
 

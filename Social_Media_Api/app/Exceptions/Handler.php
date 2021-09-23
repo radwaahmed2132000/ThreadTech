@@ -2,11 +2,21 @@
 
 namespace App\Exceptions;
 
+use App\Http\Misc\Traits\WebServiceResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Misc\Helpers\Errors;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use WebServiceResponse;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -22,20 +32,58 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontFlash = [
-        'current_password',
         'password',
         'password_confirmation',
     ];
 
     /**
-     * Register the exception handling callbacks for the application.
+     * Report or log an exception.
      *
+     * @param  \Throwable  $exception
      * @return void
+     *
+     * @throws \Exception
      */
-    public function register()
+    public function report(Throwable $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        parent::report($exception);
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($request->expectsJson())
+        {
+            if($exception instanceof ModelNotFoundException)
+                return $this->error_response(Errors::TESTING);
+            else if($exception instanceof AuthorizationException)
+                return $this->error_response(Errors::UNAUTHORIZED);
+            else if($exception instanceof AuthenticationException)
+                return $this->error_response(Errors::UNAUTHENTICATED);
+            else if($exception instanceof ValidationException)
+                return $this->error_response($this->print_validation_errors($exception->validator->errors()->all()));
+
+            // in production only
+            if(app()->environment('production')) return $this->error_response(Errors::GENERAL);
+        }
+
+        return parent::render($request, $exception);
+    }
+
+    private function print_validation_errors($errors)
+    {
+        $errors_txt = "";
+        foreach($errors as $message)
+            $errors_txt .= $message."\n";
+        return $errors_txt;
+    }
+
 }

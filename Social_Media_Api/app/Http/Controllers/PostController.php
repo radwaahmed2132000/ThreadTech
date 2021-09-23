@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Misc\Helpers\Config;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\PostsResource;
@@ -17,13 +18,13 @@ class PostController extends Controller
         # code...
 
 
-                 $posts=Post::where('user_id',$request->user()->id)->paginate(15);
-                 return PostsResource::collection( $posts);
+                 $posts=Post::where('user_id',$request->user()->id)->paginate(Config::PAGINATION_LIMIT);
+                 return $this->success_response( PostsResource::collection( $posts));
     }
     public function show(Post $post)
     {
         # code...
-        return new PostResource($post);
+        return $this->success_response(new PostResource($post));
     }
     public function  create(PostRequest $request)
     {
@@ -33,13 +34,13 @@ class PostController extends Controller
         $arr=$request->validated();
         $arr['user_id']=$request->user()->id;
 
-        return  new PostResource( Post::create($arr));
+        return $this->success_response( new PostResource( Post::create($arr)));
 
     }
     public function Delete(Request $request,Post $post)
     {
         $this->authorize('view',$post);
-        $post->delete();
+       return $this->success_response($post->delete());
 
     }
     public function Update(PostRequest $request,Post $post)
@@ -47,7 +48,7 @@ class PostController extends Controller
 
       $this->authorize('view',$post);
 
-        return  $post->update($request->validated());
+        return $this->success_response( $post->update($request->validated()));
 
 
     }

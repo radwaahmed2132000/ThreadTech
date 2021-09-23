@@ -10,21 +10,26 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Follower;
+use App\Http\Misc\Helpers\Config;
+use App\Http\Misc\Helpers\Errors;
+use App\Http\Misc\Helpers\Success;
+
 class CommentController extends Controller
 {
     //
+
     public function index(Request $request)
     {
         # code...
 
 
-                 $Comment=Comment::where('user_id',$request->user()->id)->paginate(15);
-                 return CommentsResource::collection( $Comment);
+                 $Comment=Comment::where('user_id',$request->user()->id)->paginate(Config::PAGINATION_LIMIT);
+                 return  $this->success_response(CommentsResource::collection( $Comment));
     }
     public function show(Comment $comment)
     {
         # code...
-        return new CommentResource($comment);
+        return  $this->success_response( new CommentResource($comment));
     }
 
     public function  create(CommentRequest $request)
@@ -39,16 +44,17 @@ class CommentController extends Controller
         if($user->id !=$arr['user_id'])
       {
         $follower=Follower::where('user_id',$user->id)->where('follower_id',$arr['user_id'])->get();
-        if($follower!=null)
-      {   $postreaction=  Comment::create($arr);
-        SendnotificationController::commentnotification($request,$postreaction);
-        return  new CommentResource ($postreaction);
-      }
+            if($follower!=null)
+            {   $postreaction=  Comment::create($arr);
+                SendnotificationController::commentnotification($request,$postreaction);
+                return $this->success_response(  new CommentResource ($postreaction));
+            }
+            return $this->error_response("Failed");
       }
       else
       {
         $postreaction=  Comment::create($arr);
-        return  new CommentResource ($postreaction);
+        return   $this->success_response( new CommentResource ($postreaction));
       }
 
 
@@ -58,12 +64,12 @@ class CommentController extends Controller
     {
 
         $this->authorize('view',$comment);
-        $comment->delete();
+        $this->success_response( $comment->delete());
     }
     public function Update(UpdateCommentRequest $request,Comment $comment)
     {
          $this->authorize('view',$comment);
 
-        return  $comment->update($request->validated());
+        return  $this->success_response( $comment->update($request->validated()));
     }
 }

@@ -43,7 +43,7 @@ class FollowrequestNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->Followrequest['name'].'send you follow request')
+                    ->line($this->Followrequest['name'].' send you follow request')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }

@@ -21,7 +21,7 @@ class UserController extends Controller
         $user=$request->user();
         $request->user()->token()->revoke();
         $user->delete();
-        return "Your account has been deteleted successfully";
+        return $this->success_response( "Your account has been deteleted successfully");
 
     }
     public function Update(UserRequest $request)
@@ -41,7 +41,7 @@ class UserController extends Controller
             $user['image']=$request->image;
         }
         $user->save();
-        return $user;
+        return $this->success_response( $user);
 
     }
     public function ChangePassword(PasswordRequest $request )
@@ -54,16 +54,16 @@ class UserController extends Controller
        {
           $user['password']=bcrypt($arr['password']);
           $user->save();
-          return "Password is changed successfully";
+          return $this->success_response( "Password is changed successfully");
        }
 
-       return " Passwords don't match";
+       return $this->error_response(" Passwords don't match");
    }
    public function Getposts(Request $request)
    {
        # code...
        $user=$request->user();
 
-       return $user->post;
+       return $this->success_response( $user->post);
    }
 }
