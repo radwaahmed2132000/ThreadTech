@@ -73,9 +73,15 @@ Route::group(['middleware'=>'auth:api'],function()
     Route::delete('Following/{following}', [FollowingController::class,'Delete']);
     //FollowRequest
     Route::get('FollowRequest',[FollowrequestController::class,'index']);
-    Route::put('FollowRequest/{FollowRequest}',[FollowrequestController::class,'Update']);
+    Route::put('FollowRequest/{FollowRequest}',[FollowrequestController::class,'Update'])->middleware('verified');
     Route::delete('FollowRequest/{FollowRequest}', [FollowrequestController::class,'Delete']);
     Route::post('FollowRequest/{FollowRequest}', [FollowrequestController::class,'create'])->middleware('verified');
+    // Followers
+    Route::get('Follower',[FollowerController::class,'index']);
+    Route::delete('Follower/{follower}', [FollowerController::class,'Delete']);
+    // Followings
+    Route::get('Following',[FollowingController::class,'index']);
+    Route::delete('Following/{following}', [FollowingController::class,'Delete']);
 
 
 
@@ -99,7 +105,7 @@ Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke']);
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store']);
 
-// share posts,Priacy of User,block user, Forget Password  ,Groups'may be feature',Filter Search as feature
+//follow notification, share posts,Priacy of User,block user, Forget Password  ,Groups'may be feature',Filter Search as feature
 //Extra: Gmail Api  & privacy
 // Exception handler , more middle ware for json response, Base64 for images
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

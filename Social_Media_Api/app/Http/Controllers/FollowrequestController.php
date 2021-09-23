@@ -6,6 +6,7 @@ use App\Models\Followrequest;
 use Exception;
 use App\Models\Follower;
 use App\Models\Following;
+use App\Notifications\FollowrequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,8 @@ class FollowrequestController extends Controller
     public function create(Request $request,$FollowRequest)
     {
         # code...
-        $arr= $FollowRequest;
+        $arr=[];
+        $arr['requester_id']= $FollowRequest;
         $arr['user_id']=$request->user()->id;
         $arr['request']=false;
         new FollowrequestResource(  Followrequest::create($arr));
@@ -29,15 +31,24 @@ class FollowrequestController extends Controller
     // show follow request
     public function index(Request $request)
     {
-        return FollowrequestResource::collection(Followrequest::where('user_id',$request->user()->id));
+
+        return FollowrequestResource::collection(Followrequest::where('user_id',$request->user()->id)->paginate());
     }
     //accept
+    // example:
+       // 1        2
+    // ahmed send to mohmaed   request
+    // user_id         requester_id  false
+    //mohamed accept ahmed
+
     public function Update(Request $request,$FollowRequest)
     {
         $requester_id=$FollowRequest;
         $arr=[
-            'requester_id'=>$requester_id,
-            'user_id'=>$request->user()->id
+            //ahmed 1
+            'user_id'=>$requester_id,
+            //mohamed         2
+            'requester_id'=>$request->user()->id
         ];
 
 
@@ -45,12 +56,12 @@ class FollowrequestController extends Controller
         try
         {
             DB::beginTransaction();
-
-
-
+            // accept done
             Followrequest::where($arr)->update(['request'=>true]);
-            Follower::create(['user_id'=>$request->user()->id,'follower_id'=>$requester_id]);
-            Following::create(['user_id'=>$requester_id,'following_id'=>$request->user()->id]);
+            // ahmed has a follower mohamed
+            Following::create(['user_id'=>$arr['user_id'],'following_id'=>$arr['requester_id']]);
+            // mohamed has a following ahmed
+            Follower::create(['user_id'=>$arr['requester_id'],'follower_id'=>$arr['user_id']]);
 
             DB::commit();
             return" done";
