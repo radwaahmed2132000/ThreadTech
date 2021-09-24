@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use  App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Laravel\Passport\Bridge\UserRepository;
+
 class AuthController extends Controller
 {
 
@@ -29,7 +32,7 @@ class AuthController extends Controller
 
 
        event(new Registered($user));
-     return $this->success_response(["token"=>$token,"user"=>$user]);
+     return $this->success_response(["token"=>$token,"user"=>new UserResource($user)]);
     }
     public function  Signup(SignUpRequest $request)
     {
@@ -40,7 +43,7 @@ class AuthController extends Controller
           $user=User::create( $request->all());
            event(new Registered($user));
         $token=$user->createToken('Backend')->accessToken;
-        return $this->success_response( ["token"=>$token,"user"=>$user]);
+        return $this->success_response( ["token"=>$token,"user"=>new UserResource($user)]);
 
 
     }

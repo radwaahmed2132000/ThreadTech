@@ -72,4 +72,5 @@ class CommentController extends Controller
 
         return  $this->success_response( $comment->update($request->validated()));
     }
+
 }
